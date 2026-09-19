@@ -5,6 +5,6 @@ import cristianjimenez.udp.PrecioUnidad.dominio.modelos.ResultadoPrecioUnidad;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface CalcularImcInputPort {
+public interface CalcularPrecioUnidadcInputPort {
     CompletableFuture<ResultadoPrecioUnidad> calcular(CalcularPrecioUnidadCommand comando);
 }

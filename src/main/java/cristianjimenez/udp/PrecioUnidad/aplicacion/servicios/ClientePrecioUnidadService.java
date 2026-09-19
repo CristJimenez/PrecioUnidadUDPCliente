@@ -4,7 +4,7 @@ import cristianjimenez.udp.PrecioUnidad.aplicacion.dto.CalcularPrecioUnidadComma
 import cristianjimenez.udp.PrecioUnidad.aplicacion.dto.ConectarCommand;
 import cristianjimenez.udp.PrecioUnidad.aplicacion.excepciones.ClienteRedException;
 import cristianjimenez.udp.PrecioUnidad.aplicacion.mapper.ClienteMapper;
-import cristianjimenez.udp.PrecioUnidad.aplicacion.puertos.entrada.CalcularImcInputPort;
+import cristianjimenez.udp.PrecioUnidad.aplicacion.puertos.entrada.CalcularPrecioUnidadcInputPort;
 import cristianjimenez.udp.PrecioUnidad.aplicacion.puertos.entrada.GestionarConexionInputPort;
 import cristianjimenez.udp.PrecioUnidad.dominio.enums.EstadoConexion;
 import cristianjimenez.udp.PrecioUnidad.dominio.modelos.EventoCliente;
@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
-public final class ClientePrecioUnidadService implements GestionarConexionInputPort, CalcularImcInputPort {
+public final class ClientePrecioUnidadService implements GestionarConexionInputPort, CalcularPrecioUnidadcInputPort {
     private static final Logger LOG = LoggerFactory.getLogger(ClientePrecioUnidadService.class);
     private static final String LOG_ERROR_OPERACION = "Falló la operación UDP {}";
     private static final String OPERACION_CONECTAR = "conectar";
