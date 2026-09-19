@@ -1,17 +1,35 @@
 package cristianjimenez.udp;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import cristianjimenez.udp.PrecioUnidad.adaptadores.notificacion.AdaptadorNotificacionCliente;
+import cristianjimenez.udp.PrecioUnidad.adaptadores.red.AdaptadorClienteUdp;
+import cristianjimenez.udp.PrecioUnidad.adaptadores.red.CanalUdp;
+import cristianjimenez.udp.PrecioUnidad.adaptadores.red.ProtocoloUdpMapper;
+import cristianjimenez.udp.PrecioUnidad.aplicacion.mapper.ClienteMapper;
+import cristianjimenez.udp.PrecioUnidad.aplicacion.servicios.ClientePrecioUnidadService;
+import cristianjimenez.udp.PrecioUnidad.entrypoint.gui.ClienteFrame;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
-        }
+import javax.swing.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Main {
+    public static void main(final String[] args) {
+        final AdaptadorNotificacionCliente notificador = new AdaptadorNotificacionCliente();
+        final AdaptadorClienteUdp udp = new AdaptadorClienteUdp(new CanalUdp(3000), new ProtocoloUdpMapper());
+        final ExecutorService executor = Executors.newSingleThreadExecutor(tarea -> {
+            final Thread hilo = new Thread(tarea, "cliente-udp");
+            hilo.setDaemon(true);
+            return hilo;
+        });
+        final ClientePrecioUnidadService servicio = new ClientePrecioUnidadService(
+                udp, notificador, new ClienteMapper(), executor);
+        SwingUtilities.invokeLater(() -> {
+            final ClienteFrame frame = new ClienteFrame(servicio, servicio);
+            notificador.registrar(frame);
+            frame.setVisible(true);
+        });
     }
 }
